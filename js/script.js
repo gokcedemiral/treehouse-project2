@@ -7,26 +7,13 @@ Erşen Gökçe Demiral
 /*** 
    The global variables
 ***/
-const listItems = document.querySelectorAll('li.student-item');
+const studentListItems = document.querySelectorAll('li.student-item');
 const page = document.querySelector('body>div.page');
-//console.log(listItems);
 const perPage = 10;
 
-
 /*** 
- *    Function showPage
+      Function showPage
          displays only the 10(perPage) on the page.
-         
-      Parameters:
-         - list : all of the students' list (we will call the listItems we defined above)
-         - page : the page that the selected 10 is supposed to be displayed
-      
-      What else is there:
-         - firstIndex : The first list item's index of the page
-         - lastIndex : The last list item's index of the page
-         - for loop to iterate through the list items
-         - if condition to set whether they have the index between first and last index (including both)
-
 ***/
 const showPage = (list, page) => {
    const firstIndex = (page * perPage) - perPage;
@@ -39,23 +26,13 @@ const showPage = (list, page) => {
       }
    }
 };
+/*** End showPage() ***/
 
 /*** 
- *    Function appendPageLinks
+      Function appendPageLinks:
          creates pagination buttons. 
          places to the DOM. 
-         adds functionality to the buttons. 
-         
-      Parameters:
-         - list : all of the students' list (we will call the listItems we defined above)
-         - page : the page that the selected 10 is supposed to be displayed
-      
-      What else is there:
-         - firstIndex : The first list item's index of the page
-         - lastIndex : The last list item's index of the page
-         - for loop to iterate through the list items
-         - if condition to set whether they have the index between first and last index (including both)
-
+         adds functionality to the buttons.
 ***/
 const appendPageLinks = (list) => {
    const pageAmount = Math.ceil( list.length / perPage);
@@ -69,22 +46,82 @@ const appendPageLinks = (list) => {
       const pageNumber = i+1;
       const li = document.createElement('li');
       const a = document.createElement('a');
+      a.href= '#';
       a.textContent = pageNumber;
       li.appendChild(a);
       paginationUl.appendChild(li);
-      a.addEventListener('click', () => {
-         showPage(listItems, pageNumber);
-         a.className = 'active';
-      });
    }
-   
-
+   const aTags = document.getElementsByTagName('a');
+   aTags[0].className = 'active'; //to set the first one active as it will display the first ten as default
+  
+   paginationUl.addEventListener('click', (e) => {  
+      e.preventDefault();
+      //Loop to remove all the active class from aTags
+      for (let i = 0; i < aTags.length ; i++) {                      
+         aTags[i].className = '';                       
+      };  
+      e.target.className = "active";                              
+      showPage(studentListItems, e.target.textContent);                             
+   });
 };
-appendPageLinks(listItems);
+/*** End appendPageLinks() ***/
+
+/***
+   Calling for the functions
+***/
+showPage(studentListItems, 1);
+appendPageLinks(studentListItems);
+
+/*** Exceeding Expectations Part ***/
+
+// Adding the search bar
+const pageHeader = document.querySelector('.page-header.cf'); 
+const studentSearch = document.createElement('div');
+studentSearch.className = 'student-search';
+pageHeader.appendChild(studentSearch);
+const searchInput = document.createElement('input');
+searchInput.placeholder = 'Search for students...';
+studentSearch.appendChild(searchInput);
+const searchButton = document.createElement('button');
+searchButton.textContent = 'Search';
+studentSearch.appendChild(searchButton);
+
+// Creating the no result div in case of no student match
+const noMatch = document.createElement('div')
+
+/*** Function searchBox  still not working - i gave up. please let me know what's wrong! */
+const searchBox = (search, names) => {
+   //empty array for search results
+   const results =[];
+   // looping through the names for search input
+   for( let i = 0; i < names.length; i++){
+      names[i].style.display = 'none';
+      const input = search.value.toLowerCase();
+      const studentName = names[i].textContent.toLowerCase();
+
+      if( input.length !== 0 && studentName.includes(input) ){
+         results.push(names[i]);
+         noMatch.innerHTML = '';
+      }      
+      if ( results.length === 0 && input.length !==0 ){
+         noMatch.innerHTML = '<p>Sorry! There seems to be no match. Keep trying!</p>';
+         page.appendChild(noMatch);
+      } else {
+         showPage(results, 1);
+         appendPageLinks(results);
+      }
+   }
+ };
+
+// // Event Listeners for Search bar
+// searchButton.addEventListener('click',(e) =>{
+//    e.preventDefault();
+//    searchBox(searchInput, studentListItems);
+// });
+
+// searchInput.addEventListener('keyup',(e) =>{
+//    e.preventDefault();
+//    searchBox(searchInput, studentListItems);
+// });
 
 
-
-
-
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.

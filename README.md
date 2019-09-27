@@ -17,8 +17,37 @@ A student list containing names, photos and email addresses are given. By using 
 
 # What I built
 
+# 1  Function showPage
+         displays only the 10(perPage) on the page.
+         
+      Parameters:
+         - list : all of the students' list (we will call the studentListItems we defined above)
+         - page : the page that the selected 10 is supposed to be displayed
+      
+      What else is there:
+         - firstIndex : The first list item's index of the page
+         - lastIndex : The last list item's index of the page
+         - for loop to iterate through the list items
+         - if condition to set whether they have the index between first and last index (including both)
+
+# 2 Function appendPageLinks
+         creates pagination buttons. 
+         places to the DOM. 
+         adds functionality to the buttons. 
+         
+      Parameters:
+         - list : all of the students' list (we will call the studentListItems we defined above)
+      
+      What else is there:
+         - pageAmount : The amount of pages. Found by dividing list's length to per page
+         - created pagination div and its content of ul.
+         - for loop to iterate through the page amount and set buttons with the iteration
+         - set the first a tag to active
+         - Event listener for the pagination Ul: 
+            -- loops all the a tags (aTags) and removes the class names. 
+            -- sets the class name for clicked button active.
+            -- the studentListItems and target's text content(which we set as pageNumber) are sent as arguments to the showPage func.
 
 
-
-The skills, techniques and process used to complete the project
-If you’ve attempted to earn an “Exceeds Expectations” grade, list the “Extra Credit” features you added.
+# 3 Function searchBox -> needs work
+- I have not found a way to make it work correct.
